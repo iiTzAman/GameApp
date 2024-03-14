@@ -8,7 +8,12 @@ export default function App() {
       colors={["#72063c", "#dbb150"]}
       style={styles.rootContainer}
     >
-      <ImageBackground source={require('./assets/images/dices.jpg')} resizeMode="cover" style={styles.rootContainer} imageStyle={styles.backgroundImage}>
+      <ImageBackground
+        source={require("./assets/images/dices.jpg")}
+        resizeMode="cover"
+        style={styles.rootContainer}
+        imageStyle={styles.backgroundImage}
+      >
         <StartGameScreen />
       </ImageBackground>
     </LinearGradient>
@@ -19,7 +24,7 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
   },
-  backgroundImage:{
-    opacity:0.15
+  backgroundImage: {
+    opacity: 0.15,
   },
 });
