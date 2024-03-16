@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { TextInput, View, StyleSheet, Alert } from "react-native";
+import { TextInput, View, StyleSheet, Alert, Text } from "react-native";
 
 import PrimaryButton from "../components/PrimaryButton";
+import Color from "../constants/Color";
+import CardContainer from "../components/CardContainer";
 
-function StartGameScreen() {
+function StartGameScreen({pickedNum}) {
   const [enteredNumber, setEnteredNumber] = useState("");
 
   function inputNumberHandler(someNumber) {
@@ -27,10 +29,15 @@ function StartGameScreen() {
       ]);
       return;
     }
+    pickedNum(inputNumber)
   }
 
   return (
-    <View style={styles.inputContainer}>
+    <View>
+    <View>
+      <Text style={styles.titleText}>GUESS.io</Text>
+    </View>
+    <CardContainer style={styles.cardContainer}>
       <TextInput
         style={styles.numberInput}
         maxLength={2}
@@ -46,6 +53,7 @@ function StartGameScreen() {
           <PrimaryButton onPress={confirmButtonHandler}>Confirm</PrimaryButton>
         </View>
       </View>
+    </CardContainer>
     </View>
   );
 }
@@ -53,18 +61,15 @@ function StartGameScreen() {
 export default StartGameScreen;
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    padding: 16,
-    marginTop: 100,
-    backgroundColor: "#460626",
-    marginHorizontal: 20,
-    borderRadius: 8,
-    elevation: 4,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    shadowOpacity: 0.25,
-    alignItems: "center",
+  titleText:{
+    fontFamily:'OpenSansBold',
+    fontSize:40,
+    textAlign:'center',
+    color:Color.primary700,
+    marginTop:40,
+  },
+  cardContainer:{
+    marginHorizontal:20
   },
   buttonsContainer: {
     flexDirection: "row",
@@ -77,11 +82,11 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     fontSize: 32,
-    borderBottomColor: "#dbb150",
-    borderBottomWidth: 3,
-    color: "#ddb52f",
+    borderBottomColor: Color.accent500,
+    borderBottomWidth: 2,
+    color: Color.accent500,
     marginVertical: 8,
-    fontWeight: "bold",
+    fontFamily:'OpenSansBold',
     textAlign: "center",
   },
 });
