@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     marginTop:40,
   },
   cardContainer:{
+    marginVertical:20,
     marginHorizontal:20
   },
   buttonsContainer: {
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     color: Color.accent500,
     marginVertical: 8,
-    fontFamily:'OpenSansBold',
+    fontFamily:'OpenSansLight',
     textAlign: "center",
   },
 });

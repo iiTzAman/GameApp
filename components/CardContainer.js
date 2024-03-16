@@ -12,7 +12,6 @@ export default CardContainer
 const styles = StyleSheet.create({
     inputContainer: {
         padding: 16,
-        marginTop:25,
         backgroundColor: Color.primary700,
         borderRadius: 8,
         elevation: 4,

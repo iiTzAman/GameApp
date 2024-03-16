@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
-import { View, StyleSheet, Text, Alert } from "react-native";
+import { View, StyleSheet, Text, Alert, FlatList } from "react-native";
 import TitleText from "../components/TitleText";
 import AnswerText from "../components/AnswerText";
 import PrimaryButton from "../components/PrimaryButton";
 import CardContainer from "../components/CardContainer";
 import Color from "../constants/Color";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
+import LogRow from "../components/LogRow";
+
+let minNumber = 1;
+let maxNumber = 100;
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -17,12 +21,11 @@ function generateRandomBetween(min, max, exclude) {
   }
 }
 
-let minNumber = 1;
-let maxNumber = 100;
-
 function GameScreen({ userNumber, onGameOver }) {
   const initialNumber = generateRandomBetween(1, 100, userNumber);
   const [numberToDisplay, getNumberToDisplay] = useState(initialNumber);
+  const [guessLog, setGuessLog] = useState([initialNumber]);
+  const [guessCounter, setGuessCounter] = useState([1]);
 
   useEffect(() => {
     if (numberToDisplay === userNumber) onGameOver();
@@ -34,7 +37,7 @@ function GameScreen({ userNumber, onGameOver }) {
       (direction === "higher" && numberToDisplay > userNumber)
     ) {
       Alert.alert("Dont Lie", "Give the right directions!!!", [
-        { text: "Back", style:'destructive' },
+        { text: "Back", style: "destructive" },
       ]);
       return;
     }
@@ -50,31 +53,45 @@ function GameScreen({ userNumber, onGameOver }) {
       numberToDisplay
     );
     getNumberToDisplay(newGuess);
+    setGuessLog([...guessLog, newGuess]);
+    setGuessCounter(guessCounter + 1);
   }
 
   return (
     <View style={styles.container}>
-      <TitleText>Opponent's Guess</TitleText>
+      <CardContainer>
+        <TitleText>Opponent's Guess</TitleText>
+      </CardContainer>
       <View style={styles.opponentGuessContainer}>
         <AnswerText>{numberToDisplay}</AnswerText>
       </View>
-      <CardContainer>
+      <CardContainer style={styles.cardContainer}>
         <View style={styles.directionTextContainer}>
           <Text style={styles.directionText}>Higher or Lower?</Text>
         </View>
         <View style={styles.buttonsContainer}>
-          <View style={styles.buttonContainer}> 
+          <View style={styles.buttonContainer}>
             <PrimaryButton onPress={nextGuessHandler.bind(this, "higher")}>
-            <MaterialIcons name="add" size={24} color="white" />            
+              <MaterialIcons name="add" size={24} color="white" />
             </PrimaryButton>
           </View>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
-            <MaterialIcons name="remove" size={24} color="white" />            
+              <MaterialIcons name="remove" size={24} color="white" />
             </PrimaryButton>
           </View>
         </View>
       </CardContainer>
+      <View style={styles.logContainer}>
+        <FlatList
+          data={guessLog}
+          renderItem={(itemData) => (
+            <LogRow guessCount={itemData.index} guessNumber={itemData.item} />
+          )}
+          keyExtractor={(item) => item}
+          inverted
+        />
+      </View>
     </View>
   );
 }
@@ -83,7 +100,11 @@ export default GameScreen;
 
 const styles = StyleSheet.create({
   container: {
+    flex:1,
     padding: 24,
+  },
+  cardContainer: {
+    marginVertical: 20,
   },
   opponentGuessContainer: {
     backgroundColor: "#ffffff8b",
@@ -92,15 +113,17 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   directionText: {
-    fontFamily:'OpenSansLight',
+    fontFamily: "OpenSansLight",
     textAlign: "center",
     fontSize: 22,
     color: Color.accent600,
   },
-  buttonsContainer:{
-    flexDirection:'row'
+  buttonsContainer: {
+    flexDirection: "row",
   },
-  buttonContainer:{
-    flex:1,
+  buttonContainer: {
+    flex: 1,
   },
+  logContainer:{
+  }
 });

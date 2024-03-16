@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, ImageBackground, SafeAreaView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import TitleText from "./components/TitleText";
 
 import StartGameScreen from "./Screens/StartGameScreen";
 import GameScreen from "./Screens/GameScreen";
@@ -23,6 +22,10 @@ export default function App() {
     setGameIsOver(true)
   }
 
+  function StartNewGameHandler(){
+    setUserNumber(null)
+  }
+
   let screen = <StartGameScreen pickedNum={pickedNumberHandler} />;
 
   if (userNumber) {
@@ -30,7 +33,7 @@ export default function App() {
   }
 
   if (gameIsOver && userNumber){
-    screen = <GameOverScreen/>
+    screen = <GameOverScreen onPress={StartNewGameHandler}/>
   }
 
   let [fontsLoaded] = useFonts({
@@ -52,7 +55,7 @@ export default function App() {
       <ImageBackground
         source={require("./assets/images/dices.jpg")}
         resizeMode="cover"
-        style={styles.rootContainer}
+        style={styles.imageBackground}
         imageStyle={styles.backgroundImage}
       >
         <SafeAreaView style={styles.contentsContainer}>{screen}</SafeAreaView>
@@ -65,7 +68,11 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
   },
+  imageBackground:{
+    flex: 1,
+  },
   contentsContainer:{
+    flex:1,
     marginTop:20,
   },
   backgroundImage: {
